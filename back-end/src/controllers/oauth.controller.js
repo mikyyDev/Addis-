@@ -21,7 +21,8 @@ export const firebaseLogin = dbQuery(async (req, res) => {
   let decodedToken;
   try {
     decodedToken = await getFirebaseAdminAuth().verifyIdToken(token);
-  } catch {
+  } catch (err) {
+    console.error("Firebase token verification failed:", err.message);
     throw new HttpError({
       status: 401,
       message: "Invalid Firebase authentication token",

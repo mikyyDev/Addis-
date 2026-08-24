@@ -27,8 +27,19 @@ const getFirebaseAdminAuth = () => {
   const privateKey = process.env.FIREBASE_PRIVATE_KEY || serviceAccount?.private_key;
 
   if (!projectId || !clientEmail || !privateKey) {
+    console.error("Firebase Admin: Missing credentials", {
+      hasProjectId: !!projectId,
+      hasClientEmail: !!clientEmail,
+      hasPrivateKey: !!privateKey,
+    });
     throw new Error("Firebase Admin authentication is not configured.");
   }
+
+  // Normalize newlines: Render may store \\n as literal backslash-n
+  const normalizedKey = privateKey
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\r\n/g, "\n");
 
   const app =
     getApps()[0] ??
@@ -36,7 +47,7 @@ const getFirebaseAdminAuth = () => {
       credential: cert({
         projectId,
         clientEmail,
-        privateKey: privateKey.replace(/\\n/g, "\n"),
+        privateKey: normalizedKey,
       }),
     });
 
