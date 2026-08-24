@@ -1,0 +1,12 @@
+<? songs.forEach(song =>
+{ ?>
+<div class="song">
+  <img src="<?= song.artwork ?>" alt="cover" />
+  <p>
+    <?= song.title ?>
+    –
+    <?= song.artist ?>
+  </p>
+  <audio controls src="<?= song.stream_url ?>"></audio>
+</div>
+<? }) ?>

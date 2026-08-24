@@ -1,0 +1,37 @@
+import express from "express";
+import {
+  createPlaylist,
+  getPlaylists,
+  getPlaylistById,
+  updatePlaylist,
+  deletePlaylist,
+  getPlaylistStats,
+  addSongToPlaylist,
+  removeSongFromPlaylist,
+} from "../controllers/playlist.controller.js";
+
+import {
+  createPlaylistSchema,
+  updatePlaylistSchema,
+} from "../validators/playlist.validation.js";
+
+import { validateBody } from "../middleware/validateBody.middleware.js";
+import { authenticateUser } from "../middleware/auth.middleware.js";
+
+const router = express.Router();
+
+router.use(authenticateUser);
+
+router.post("/", validateBody(createPlaylistSchema), createPlaylist);
+router.get("/", getPlaylists);
+router.get("/stats", getPlaylistStats);
+
+router.get("/:id", getPlaylistById);
+
+router.put("/:id", validateBody(updatePlaylistSchema), updatePlaylist);
+router.delete("/:id", deletePlaylist);
+
+router.post("/add-song", addSongToPlaylist);
+router.post("/remove-song", removeSongFromPlaylist);
+
+export default router;
