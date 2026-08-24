@@ -17,6 +17,7 @@ const envSchema = z.object({
     .string()
     .url("LASTFM_API_URL must be a valid URL")
     .default("https://ws.audioscrobbler.com/2.0/"),
+  CLIENT_URL: z.string().default("http://localhost:5173"),
   FIREBASE_PROJECT_ID: z.string().optional(),
   FIREBASE_CLIENT_EMAIL: z.string().email().optional(),
   FIREBASE_PRIVATE_KEY: z.string().optional(),
