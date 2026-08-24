@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { authService } from "../services/auth.service";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 import type {
   LoginRequest,
@@ -8,44 +9,6 @@ import type {
   UpdateProfileRequest,
   User,
 } from "../types/auth.types";
-
-const getErrorMessage = (error: unknown, fallback: string): string => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null) {
-    const errObj = error as Record<string, unknown>;
-    const response = errObj.response;
-
-    if (typeof response === "object" && response !== null) {
-      const responseObj = response as Record<string, unknown>;
-      const data = responseObj.data;
-
-      if (typeof data === "object" && data !== null) {
-        const dataObj = data as Record<string, unknown>;
-
-        const message = dataObj.message;
-        if (typeof message === "string") {
-          return message;
-        }
-
-        if (Array.isArray(dataObj.errors)) {
-          const firstError = dataObj.errors[0];
-          if (typeof firstError === "object" && firstError !== null) {
-            const firstErrorMessage = (firstError as Record<string, unknown>)
-              .message;
-            if (typeof firstErrorMessage === "string") {
-              return firstErrorMessage;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return fallback;
-};
 
 interface AuthState {
   user: User | null;

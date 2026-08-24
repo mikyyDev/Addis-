@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { albumService } from "../services/album.service";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 import type {
   Album,
@@ -45,30 +46,6 @@ interface AlbumState {
 
   clearError: () => void;
 }
-
-const getErrorMessage = (error: unknown, fallback: string): string => {
-  if (typeof error === "object" && error !== null) {
-    const response = (
-      error as {
-        response?: {
-          data?: {
-            message?: unknown;
-          };
-        };
-      }
-    ).response;
-
-    if (typeof response?.data?.message === "string") {
-      return response.data.message;
-    }
-  }
-
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return fallback;
-};
 
 export const useAlbumStore = create<AlbumState>((set, get) => ({
   albums: [],

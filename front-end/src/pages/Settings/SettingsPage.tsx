@@ -8,6 +8,7 @@ import Sidebar from "../../components/dashboard/Sidebar/Sidebar";
 import MobileToggle from "../../components/dashboard/Sidebar/MobileToggle";
 import { useAuthStore } from "../../store/auth.store";
 import { authService } from "../../services/auth.service";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 import {
   updateProfileSchema,
@@ -60,42 +61,6 @@ interface ToastState {
   type: "success" | "error";
   message: string;
 }
-
-const getErrorMessage = (error: unknown, fallback: string): string => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null) {
-    const errObj = error as Record<string, unknown>;
-    const response = errObj.response;
-
-    if (typeof response === "object" && response !== null) {
-      const data = (response as Record<string, unknown>).data;
-
-      if (typeof data === "object" && data !== null) {
-        const message = (data as Record<string, unknown>).message;
-        if (typeof message === "string") {
-          return message;
-        }
-
-        const errors = (data as Record<string, unknown>).errors;
-        if (Array.isArray(errors) && errors.length > 0) {
-          const firstError = errors[0];
-          if (typeof firstError === "object" && firstError !== null) {
-            const firstMessage = (firstError as Record<string, unknown>)
-              .message;
-            if (typeof firstMessage === "string") {
-              return firstMessage;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return fallback;
-};
 
 const SettingsPage = () => {
   const {

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { genreService } from "../services/genre.service";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 import type {
   Genre,
@@ -25,30 +26,6 @@ interface GenreState {
 
   clearError: () => void;
 }
-
-const getErrorMessage = (error: unknown): string => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null) {
-    const response = (
-      error as {
-        response?: {
-          data?: {
-            message?: unknown;
-          };
-        };
-      }
-    ).response;
-
-    if (typeof response?.data?.message === "string") {
-      return response.data.message;
-    }
-  }
-
-  return "Something went wrong";
-};
 
 export const useGenreStore = create<GenreState>((set) => ({
   genres: [],
@@ -78,7 +55,7 @@ export const useGenreStore = create<GenreState>((set) => ({
       set({
         genres: [],
         loading: false,
-        error: getErrorMessage(error),
+        error: getErrorMessage(error, "Something went wrong"),
       });
     }
   },
@@ -103,7 +80,7 @@ export const useGenreStore = create<GenreState>((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: getErrorMessage(error),
+        error: getErrorMessage(error, "Something went wrong"),
       });
 
       throw error;
@@ -132,7 +109,7 @@ export const useGenreStore = create<GenreState>((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: getErrorMessage(error),
+        error: getErrorMessage(error, "Something went wrong"),
       });
 
       throw error;
@@ -159,7 +136,7 @@ export const useGenreStore = create<GenreState>((set) => ({
     } catch (error) {
       set({
         loading: false,
-        error: getErrorMessage(error),
+        error: getErrorMessage(error, "Something went wrong"),
       });
 
       throw error;

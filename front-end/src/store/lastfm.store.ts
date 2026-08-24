@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 import { lastfmService } from "../services/lastfm.service";
 import { songService } from "../services/song.service";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 import type {
   LastFMAlbum,
@@ -71,35 +72,7 @@ interface LastFMState {
   clearSaveError: () => void;
 }
 
-const getErrorMessage = (error: unknown): string => {
-  /*
-   * Normal JavaScript Error.
-   */
-  if (error instanceof Error) {
-    return error.message;
-  }
 
-  /*
-   * Axios error.
-   */
-  if (typeof error === "object" && error !== null) {
-    const axiosError = error as {
-      response?: {
-        data?: {
-          message?: unknown;
-        };
-      };
-    };
-
-    const message = axiosError.response?.data?.message;
-
-    if (typeof message === "string") {
-      return message;
-    }
-  }
-
-  return "Failed to search music";
-};
 
 const STORAGE_KEYS = {
   SEARCH_HISTORY: "lastfm_search_history",
@@ -202,7 +175,7 @@ export const useLastFMStore = create<LastFMState>((set, get) => ({
         artists: [],
         albums: [],
         loading: false,
-        error: getErrorMessage(error),
+        error: getErrorMessage(error, "Failed to search music"),
       });
     }
   },
@@ -335,7 +308,7 @@ export const useLastFMStore = create<LastFMState>((set, get) => ({
     } catch (error) {
       set({
         artistDetailLoading: false,
-        artistDetailError: getErrorMessage(error),
+        artistDetailError: getErrorMessage(error, "Failed to load artist details"),
       });
     }
   },
@@ -361,7 +334,7 @@ export const useLastFMStore = create<LastFMState>((set, get) => ({
     } catch (error) {
       set({
         albumDetailLoading: false,
-        albumDetailError: getErrorMessage(error),
+        albumDetailError: getErrorMessage(error, "Failed to load album details"),
       });
     }
   },
@@ -507,7 +480,7 @@ export const useLastFMStore = create<LastFMState>((set, get) => ({
         saveError: null,
       }));
     } catch (error) {
-      const message = getErrorMessage(error);
+      const message = getErrorMessage(error, "Failed to save track");
 
       set((state) => ({
         savingTrackIds: state.savingTrackIds.filter((id) => id !== track.id),

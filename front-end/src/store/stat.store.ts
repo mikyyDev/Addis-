@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { statService } from "../services/stat.service";
 import { songService } from "../services/song.service";
 import { playlistService } from "../services/playlist.service";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 import type {
   StatsTotals,
@@ -28,28 +29,6 @@ interface StatsState {
   setPeriod: (period: StatsPeriod) => void;
   clearError: () => void;
 }
-
-const getErrorMessage = (error: unknown, fallback: string): string => {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  if (typeof error === "object" && error !== null && "response" in error) {
-    const axiosError = error as {
-      response?: {
-        data?: {
-          message?: unknown;
-        };
-      };
-    };
-
-    const message = axiosError.response?.data?.message;
-
-    return typeof message === "string" ? message : fallback;
-  }
-
-  return fallback;
-};
 
 export const useStatStore = create<StatsState>((set) => ({
   totals: null,
