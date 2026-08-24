@@ -41,7 +41,7 @@ const TrackDetailsModal = ({
   const [imageError, setImageError] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const { isInLibrary, closeTrackDetail, fetchArtistDetail, fetchAlbumDetail } =
+  const { isInLibrary, closeTrackDetail, fetchArtistDetail } =
     useLastFMStore();
 
   const inLibrary = isInLibrary(track.artist, track.title);

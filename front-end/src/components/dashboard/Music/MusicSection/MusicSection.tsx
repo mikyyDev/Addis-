@@ -12,7 +12,6 @@ import {
   Container,
   Header,
   LeftSide,
-  RightSide,
   Title,
 } from "./MusicSection.styles";
 

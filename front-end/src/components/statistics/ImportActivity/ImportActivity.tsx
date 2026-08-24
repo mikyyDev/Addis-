@@ -45,12 +45,6 @@ const ImportActivity = () => {
   const thisWeek = useMemo(() => countSince(songs, 7), [songs]);
   const thisMonth = useMemo(() => countSince(songs, 30), [songs]);
 
-  // Only show every Nth label
-  const labelStep = useMemo(
-    () => Math.max(1, Math.ceil(activity.length / 6)),
-    [activity.length],
-  );
-
   // Get first and last labels for axis
   const firstLabel = activity[0]?.label ?? "";
   const lastLabel = activity[activity.length - 1]?.label ?? "";

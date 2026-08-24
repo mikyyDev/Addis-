@@ -12,7 +12,6 @@ import {
   RankNumber,
   RankInfo,
   RankName,
-  RankMeta,
   RankBar,
   RankBarFill,
   RankStats,

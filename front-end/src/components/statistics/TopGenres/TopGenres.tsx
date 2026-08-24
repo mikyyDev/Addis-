@@ -35,7 +35,7 @@ const GENRE_COLORS = [
 ];
 
 const TopGenres = () => {
-  const { genres, songs } = useStatStore();
+  const { genres } = useStatStore();
 
   const topGenres = useMemo(
     () =>
