@@ -11,6 +11,7 @@ import {
   PortraitShell,
   SideStack,
   InfoCircle,
+  MicImage,
 } from "./Hero.styles";
 
 import portraitImage from "../../../assets/images/the Girl singing.jpg";
@@ -48,16 +49,7 @@ const Hero = () => {
 
         <RightContent>
           <PortraitShell>
-            <img
-              src={portraitImage}
-              alt="Singer portrait"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                borderRadius: "160px",
-              }}
-            />
+            <img src={portraitImage} alt="Singer portrait" />
           </PortraitShell>
           <SideStack>
             <InfoCircle>
@@ -66,16 +58,7 @@ const Hero = () => {
                 <p>Peoples In The World Loves To Listen Music</p>
               </div>
             </InfoCircle>
-            <img
-              src={micImage}
-              alt="Microphone"
-              style={{
-                width: "210px",
-                height: "300px",
-                objectFit: "cover",
-                borderRadius: "120px",
-              }}
-            />
+            <MicImage src={micImage} alt="Microphone" />
           </SideStack>
         </RightContent>
       </HeroContent>

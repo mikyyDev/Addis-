@@ -47,10 +47,12 @@ export const HeroContent = styled.div`
 
   @media (max-width: 680px) {
     padding: 96px 20px 28px;
+    gap: 24px;
   }
 
   @media (max-width: 480px) {
     padding: 80px 16px 20px;
+    gap: 20px;
   }
 `;
 
@@ -94,6 +96,10 @@ export const LeftContent = styled.div`
     margin: 0 0 34px;
     max-width: 560px;
     color: #dedaf3;
+
+    @media (max-width: 480px) {
+      margin-bottom: 24px;
+    }
   }
 `;
 
@@ -110,6 +116,7 @@ export const ButtonContainer = styled.div`
 
   @media (max-width: 480px) {
     margin-bottom: 32px;
+    gap: 14px;
   }
 `;
 
@@ -155,13 +162,12 @@ export const SecondaryButton = styled.button`
 
 export const StatsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-top: 1.5rem;
   align-items: center;
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
   }
 `;
@@ -181,8 +187,9 @@ export const StatBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 130px;
+  min-height: 100px;
   transition: 0.3s ease;
+  overflow: hidden;
 
   &:hover {
     transform: translateY(-4px);
@@ -194,6 +201,10 @@ export const StatBox = styled.div`
     font-size: 1.9rem;
     font-weight: 700;
     color: #1a0033;
+
+    @media (max-width: 480px) {
+      font-size: 1.5rem;
+    }
   }
 
   p {
@@ -207,8 +218,10 @@ export const StatBox = styled.div`
   }
 `;
 
+/* ---- Right side: grid that stacks on mobile ---- */
 export const RightContent = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   align-items: center;
   gap: 16px;
   justify-content: center;
@@ -218,30 +231,42 @@ export const RightContent = styled.div`
   }
 
   @media (max-width: 680px) {
-    transform: scale(0.75);
-    transform-origin: top center;
-    margin: -20px auto 0;
-  }
-
-  @media (max-width: 480px) {
-    transform: scale(0.58);
-    margin: -40px auto -20px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 24px;
   }
 `;
 
+/* ---- Portrait: fluid sizing ---- */
 export const PortraitShell = styled.div`
-  width: 320px;
-  height: 540px;
+  width: min(320px, 65vw);
+  aspect-ratio: 320 / 540;
   border-radius: 160px;
   border: 3px solid rgba(248, 247, 255, 0.72);
   padding: 10px;
   box-sizing: border-box;
   transition: 0.3s ease;
-  flex-shrink: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 160px;
+    display: block;
+  }
 
   &:hover {
     border-color: rgba(139, 92, 246, 0.6);
     box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+  }
+
+  @media (max-width: 680px) {
+    width: min(260px, 55vw);
+  }
+
+  @media (max-width: 480px) {
+    width: min(220px, 50vw);
   }
 `;
 
@@ -260,21 +285,28 @@ export const SideStack = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  flex-shrink: 0;
+  align-items: center;
+
+  @media (max-width: 680px) {
+    flex-direction: row;
+    gap: 12px;
+  }
 `;
 
+/* ---- Info circle: fluid sizing ---- */
 export const InfoCircle = styled.div`
-  width: 210px;
-  height: 210px;
+  width: min(210px, 40vw);
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #5f647c;
   color: #f6f6fd;
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 24px;
+  padding: 20px;
   box-sizing: border-box;
   transition: 0.3s ease;
+  flex-shrink: 0;
 
   &:hover {
     transform: scale(1.05);
@@ -285,6 +317,10 @@ export const InfoCircle = styled.div`
     margin: 0 0 6px;
     font-size: 3.2rem;
     font-weight: 500;
+
+    @media (max-width: 680px) {
+      font-size: 2rem;
+    }
   }
 
   p {
@@ -292,42 +328,29 @@ export const InfoCircle = styled.div`
     font-size: 0.95rem;
     line-height: 1.4;
     color: #e3e4ef;
+
+    @media (max-width: 680px) {
+      font-size: 0.7rem;
+      line-height: 1.3;
+    }
   }
 
-  @media (max-width: 480px) {
-    width: 160px;
-    height: 160px;
-    padding: 16px;
-
-    h4 {
-      font-size: 2.2rem;
-    }
-
-    p {
-      font-size: 0.75rem;
-    }
+  @media (max-width: 680px) {
+    width: min(160px, 38vw);
+    padding: 12px;
   }
 `;
 
-export const MicCircle = styled.div`
-  width: 210px;
-  height: 300px;
+/* ---- Mic image: fluid sizing ---- */
+export const MicImage = styled.img`
+  width: min(210px, 40vw);
+  aspect-ratio: 210 / 300;
+  object-fit: cover;
   border-radius: 120px;
-  background:
-    radial-gradient(
-      circle at 70% 25%,
-      rgba(255, 255, 255, 0.45) 0%,
-      rgba(255, 255, 255, 0) 38%
-    ),
-    linear-gradient(180deg, #f89ba5 0%, #f58f9d 48%, #f3a0a3 100%);
-  display: grid;
-  place-items: center;
-  font-size: 5rem;
+  flex-shrink: 0;
 
-  @media (max-width: 480px) {
-    width: 160px;
-    height: 220px;
+  @media (max-width: 680px) {
+    width: min(160px, 38vw);
     border-radius: 90px;
-    font-size: 3.5rem;
   }
 `;

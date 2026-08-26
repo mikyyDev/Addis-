@@ -19,6 +19,7 @@ import {
   deleteAccount,
 } from "../controllers/profile.controller.js";
 import { firebaseLogin } from "../controllers/oauth.controller.js";
+import getFirebaseAdminAuth from "../config/firebase-admin.config.js";
 
 const router = express.Router();
 router.get("/profile", authenticateUser, getProfile);
@@ -52,6 +53,38 @@ router.post(
   uploadAvatar,
 );
 router.post("/login", validateBody(loginSchema), loginController);
+
+router.get("/firebase/status", (req, res) => {
+  const hasProjectId = !!process.env.FIREBASE_PROJECT_ID;
+  const hasClientEmail = !!process.env.FIREBASE_CLIENT_EMAIL;
+  const hasPrivateKey = !!process.env.FIREBASE_PRIVATE_KEY;
+  const privateKeyLength = process.env.FIREBASE_PRIVATE_KEY?.length || 0;
+  const startsWithHeader =
+    process.env.FIREBASE_PRIVATE_KEY?.startsWith("-----BEGIN PRIVATE KEY") ||
+    false;
+
+  try {
+    const auth = getFirebaseAdminAuth();
+    res.json({
+      initialized: true,
+      hasProjectId,
+      hasClientEmail,
+      hasPrivateKey,
+      privateKeyLength,
+      startsWithHeader,
+    });
+  } catch (err) {
+    res.json({
+      initialized: false,
+      error: err.message,
+      hasProjectId,
+      hasClientEmail,
+      hasPrivateKey,
+      privateKeyLength,
+      startsWithHeader,
+    });
+  }
+});
 
 router.post("/firebase", firebaseLogin);
 

@@ -20,9 +20,29 @@ export const firebaseLogin = dbQuery(async (req, res) => {
 
   let decodedToken;
   try {
-    decodedToken = await getFirebaseAdminAuth().verifyIdToken(token);
+    const adminAuth = getFirebaseAdminAuth();
+    decodedToken = await adminAuth.verifyIdToken(token);
   } catch (err) {
-    console.error("Firebase token verification failed:", err.message);
+    console.error("Firebase token verification failed:", {
+      message: err.message,
+      code: err.code,
+      stack: err.stack,
+    });
+
+    // Distinguish between Admin SDK init failure vs token verification failure
+    if (
+      err.message?.includes("not configured") ||
+      err.message?.includes("credential") ||
+      err.message?.includes("invalid_grant") ||
+      err.message?.includes("private key")
+    ) {
+      throw new HttpError({
+        status: 500,
+        message:
+          "Firebase Admin SDK is not configured correctly on the server. Check FIREBASE_PRIVATE_KEY.",
+      });
+    }
+
     throw new HttpError({
       status: 401,
       message: "Invalid Firebase authentication token",

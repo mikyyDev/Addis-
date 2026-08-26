@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import Sidebar from "../../components/dashboard/Sidebar/Sidebar";
-import MobileToggle from "../../components/dashboard/Sidebar/MobileToggle";
 import Header from "../../components/dashboard/Header/Header";
 import PlaylistHeader from "../../components/playlists/PlaylistHeader/PlaylistHeader";
 import PlaylistGrid from "../../components/playlists/PlaylistGrid/PlaylistGrid";
@@ -38,8 +37,6 @@ const Playlist = () => {
       <Sidebar />
 
       <MainContent>
-        <MobileToggle />
-
         <Header />
 
         {selectedPlaylist ? (
