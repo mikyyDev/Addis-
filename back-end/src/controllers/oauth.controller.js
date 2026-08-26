@@ -87,8 +87,8 @@ export const firebaseLogin = dbQuery(async (req, res) => {
 
   try {
     if (user) {
-      // Link or update the existing user with Firebase credentials
-      user.username = username;
+      // Existing user found — link Firebase credentials but keep their
+      // current username to avoid unique-constraint conflicts.
       user.provider = verifiedProvider;
       user.providerId = decodedToken.uid;
 
@@ -98,10 +98,18 @@ export const firebaseLogin = dbQuery(async (req, res) => {
 
       await user.save();
     } else {
-      // No existing user — create a brand-new account
+      // No existing user — create a brand-new account.
+      // Ensure the username is unique by appending a suffix if needed.
+      let uniqueUsername = username;
+      let suffix = 0;
+      while (await User.findOne({ username: uniqueUsername })) {
+        suffix += 1;
+        uniqueUsername = `${username}${suffix}`;
+      }
+
       user = await User.create({
         email,
-        username,
+        username: uniqueUsername,
         provider: verifiedProvider,
         providerId: decodedToken.uid,
         avatar: decodedToken.picture || null,
@@ -114,7 +122,6 @@ export const firebaseLogin = dbQuery(async (req, res) => {
     if (error.code === 11000 && error.keyPattern?.providerId) {
       const existingUser = await User.findOne({ providerId: decodedToken.uid });
       if (existingUser && String(existingUser._id) !== String(user?._id)) {
-        existingUser.username = username;
         existingUser.avatar = decodedToken.picture || existingUser.avatar;
         await existingUser.save();
         user = existingUser;
@@ -125,6 +132,17 @@ export const firebaseLogin = dbQuery(async (req, res) => {
           message: "This Google account is already linked to another user.",
         });
       }
+    } else if (error.code === 11000 && error.keyPattern?.username) {
+      // Username collision on new user creation — retry with a suffix
+      const fallbackUsername = `${username}${Date.now().toString(36)}`;
+      user = await User.create({
+        email,
+        username: fallbackUsername,
+        provider: verifiedProvider,
+        providerId: decodedToken.uid,
+        avatar: decodedToken.picture || null,
+        password: null,
+      });
     } else if (error.code === 11000 && error.keyPattern?.email) {
       console.error("Failed to create Firebase user (duplicate email):", error);
       throw new HttpError({
