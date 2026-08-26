@@ -48,6 +48,10 @@ export const HeroContent = styled.div`
   @media (max-width: 680px) {
     padding: 96px 20px 28px;
   }
+
+  @media (max-width: 480px) {
+    padding: 80px 16px 20px;
+  }
 `;
 
 export const LeftContent = styled.div`
@@ -68,6 +72,10 @@ export const LeftContent = styled.div`
 
     @media (max-width: 680px) {
       font-size: 2.2rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.8rem;
     }
   }
 
@@ -99,6 +107,10 @@ export const ButtonContainer = styled.div`
     flex-direction: column;
     max-width: 320px;
   }
+
+  @media (max-width: 480px) {
+    margin-bottom: 32px;
+  }
 `;
 
 export const PrimaryButton = styled.button`
@@ -111,6 +123,7 @@ export const PrimaryButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   min-width: 235px;
+  width: 100%;
   transition: 0.3s ease;
 
   &:hover {
@@ -130,6 +143,7 @@ export const SecondaryButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   min-width: 235px;
+  width: 100%;
   box-shadow: inset 0 -8px 24px rgba(131, 77, 255, 0.28);
   transition: 0.3s ease;
 
@@ -145,6 +159,11 @@ export const StatsContainer = styled.div`
   gap: 1rem;
   margin-top: 1.5rem;
   align-items: center;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
 `;
 
 export const StatBox = styled.div`
@@ -189,14 +208,24 @@ export const StatBox = styled.div`
 `;
 
 export const RightContent = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
   gap: 16px;
+  justify-content: center;
 
   @media (max-width: 1000px) {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 680px) {
+    transform: scale(0.75);
+    transform-origin: top center;
+    margin: -20px auto 0;
+  }
+
+  @media (max-width: 480px) {
+    transform: scale(0.58);
+    margin: -40px auto -20px;
   }
 `;
 
@@ -208,6 +237,7 @@ export const PortraitShell = styled.div`
   padding: 10px;
   box-sizing: border-box;
   transition: 0.3s ease;
+  flex-shrink: 0;
 
   &:hover {
     border-color: rgba(139, 92, 246, 0.6);
@@ -230,6 +260,7 @@ export const SideStack = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex-shrink: 0;
 `;
 
 export const InfoCircle = styled.div`
@@ -262,6 +293,20 @@ export const InfoCircle = styled.div`
     line-height: 1.4;
     color: #e3e4ef;
   }
+
+  @media (max-width: 480px) {
+    width: 160px;
+    height: 160px;
+    padding: 16px;
+
+    h4 {
+      font-size: 2.2rem;
+    }
+
+    p {
+      font-size: 0.75rem;
+    }
+  }
 `;
 
 export const MicCircle = styled.div`
@@ -278,4 +323,11 @@ export const MicCircle = styled.div`
   display: grid;
   place-items: center;
   font-size: 5rem;
+
+  @media (max-width: 480px) {
+    width: 160px;
+    height: 220px;
+    border-radius: 90px;
+    font-size: 3.5rem;
+  }
 `;

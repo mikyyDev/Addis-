@@ -10,6 +10,11 @@ export const Container = styled.div`
   align-items: start;
 
   column-gap: 20px;
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
 `;
 
 export const Label = styled.label`
@@ -25,6 +30,11 @@ export const Label = styled.label`
   width: 80px;
 
   flex-shrink: 0;
+
+  @media (max-width: 400px) {
+    width: auto;
+    margin-top: 0;
+  }
 `;
 
 interface WrapperProps {
@@ -33,6 +43,10 @@ interface WrapperProps {
 
 export const InputWrapper = styled.div<WrapperProps>`
   grid-column: 2;
+
+  @media (max-width: 400px) {
+    grid-column: 1;
+  }
 
   min-width: 0;
 
@@ -88,6 +102,10 @@ export const StyledInput = styled.input`
 `;
 export const ErrorText = styled.p`
   grid-column: 2;
+
+  @media (max-width: 400px) {
+    grid-column: 1;
+  }
 
   min-width: 0;
 

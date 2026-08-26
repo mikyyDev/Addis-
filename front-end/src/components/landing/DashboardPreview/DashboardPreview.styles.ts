@@ -34,6 +34,10 @@ export const PreviewWrapper = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   overflow: hidden;
+
+  @media (max-width: 600px) {
+    border-radius: 16px;
+  }
   backdrop-filter: blur(12px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   transition: 0.3s ease;
@@ -51,6 +55,12 @@ export const PreviewHeader = styled.div`
   align-items: center;
   padding: 24px 28px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: 600px) {
+    padding: 16px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 `;
 
 export const PreviewTitle = styled.h3`
@@ -89,6 +99,14 @@ export const PreviewContent = styled.div`
 
 export const TableSection = styled.div`
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  /* Hide scrollbar on mobile for cleaner look */
+  @media (max-width: 600px) {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 export const Table = styled.table`
@@ -124,6 +142,7 @@ export const TableCell = styled.td`
   color: rgba(255, 255, 255, 0.4);
   font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
 `;
 
 export const TableCellTitle = styled.td`
@@ -134,6 +153,7 @@ export const TableCellTitle = styled.td`
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   align-items: center;
+  white-space: nowrap;
 `;
 
 export const TableCellArtist = styled.td`
@@ -141,6 +161,7 @@ export const TableCellArtist = styled.td`
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
 `;
 
 export const TableCellAlbum = styled.td`
@@ -148,6 +169,7 @@ export const TableCellAlbum = styled.td`
   color: rgba(255, 255, 255, 0.5);
   font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
 `;
 
 export const TableCellDuration = styled.td`
@@ -155,6 +177,7 @@ export const TableCellDuration = styled.td`
   color: rgba(255, 255, 255, 0.4);
   font-size: 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  white-space: nowrap;
 `;
 
 export const TableCellMenu = styled.td`
@@ -176,6 +199,11 @@ export const Pagination = styled.div`
   gap: 24px;
   padding: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  @media (max-width: 480px) {
+    gap: 16px;
+    padding: 12px;
+  }
 `;
 
 export const PaginationText = styled.span`

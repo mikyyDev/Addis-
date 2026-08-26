@@ -14,6 +14,11 @@ export const Container = styled.div`
   align-items: start;
 
   column-gap: 20px;
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
 `;
 
 export const Label = styled.label`
@@ -28,6 +33,11 @@ export const Label = styled.label`
   font-weight: 600;
 
   padding-top: 12px;
+
+  @media (max-width: 400px) {
+    width: auto;
+    padding-top: 0;
+  }
 `;
 
 export const InputWrapper = styled.div<InputWrapperProps>`

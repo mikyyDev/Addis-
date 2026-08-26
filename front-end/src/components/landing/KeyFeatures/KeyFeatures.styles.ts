@@ -74,6 +74,10 @@ export const CardGrid = styled.div`
   @media (max-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const Card = styled.div`

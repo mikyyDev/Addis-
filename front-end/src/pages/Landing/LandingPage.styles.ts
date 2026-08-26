@@ -7,6 +7,7 @@ export const PageWrapper = styled.div`
   }
 
   min-height: 100vh;
+  overflow-x: hidden;
   color: #f7f3ff;
   background-color: #080714;
   background-image:

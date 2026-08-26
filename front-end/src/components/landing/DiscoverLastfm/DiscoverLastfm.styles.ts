@@ -124,6 +124,7 @@ export const Visual = styled.div`
 
 export const LastfmLogo = styled.div`
   width: 320px;
+  max-width: 100%;
   height: 185px;
   border-radius: 20px;
   background-image:

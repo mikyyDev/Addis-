@@ -68,4 +68,9 @@ export const Button = styled.button`
   &:active {
     transform: scale(0.98);
   }
+
+  @media (max-width: 480px) {
+    padding: 14px 36px;
+    font-size: 16px;
+  }
 `;

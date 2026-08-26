@@ -40,6 +40,8 @@ export const Card = styled.div`
 
   max-width: 460px;
 
+  margin: 16px;
+
   padding: 45px;
 
   border-radius: 24px;
@@ -57,8 +59,9 @@ export const Card = styled.div`
     transform: translateY(-4px);
   }
 
-  @media (max-width: 600px) {
-    width: 90%;
-    padding: 32px 24px;
+  @media (max-width: 480px) {
+    padding: 28px 20px;
+    border-radius: 18px;
+    margin: 12px;
   }
 `;

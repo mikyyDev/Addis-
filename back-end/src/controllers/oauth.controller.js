@@ -52,14 +52,22 @@ export const firebaseLogin = dbQuery(async (req, res) => {
   }
 
   const username = decodedToken.name || email.split("@")[0];
-  const emailPattern = new RegExp(
-    `^${email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
-    "i",
-  );
-  let user = await User.findOne({ email: emailPattern });
+
+  // First try to find an existing user linked to this Firebase UID
+  let user = await User.findOne({ providerId: decodedToken.uid });
+
+  if (!user) {
+    // Then try to find by email (e.g. user registered locally with the same email)
+    const emailPattern = new RegExp(
+      `^${email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
+      "i",
+    );
+    user = await User.findOne({ email: emailPattern });
+  }
 
   try {
     if (user) {
+      // Link or update the existing user with Firebase credentials
       user.username = username;
       user.provider = verifiedProvider;
       user.providerId = decodedToken.uid;
@@ -70,6 +78,7 @@ export const firebaseLogin = dbQuery(async (req, res) => {
 
       await user.save();
     } else {
+      // No existing user — create a brand-new account
       user = await User.create({
         email,
         username,
@@ -80,11 +89,35 @@ export const firebaseLogin = dbQuery(async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("Failed to link Firebase account:", error);
-    throw new HttpError({
-      status: 409,
-      message: "This Google account could not be linked to the existing user.",
-    });
+    // If the save/create failed due to a duplicate key (e.g. another user
+    // already owns this providerId), retry by merging into that user.
+    if (error.code === 11000 && error.keyPattern?.providerId) {
+      const existingUser = await User.findOne({ providerId: decodedToken.uid });
+      if (existingUser && String(existingUser._id) !== String(user?._id)) {
+        existingUser.username = username;
+        existingUser.avatar = decodedToken.picture || existingUser.avatar;
+        await existingUser.save();
+        user = existingUser;
+      } else {
+        console.error("Failed to link Firebase account (duplicate providerId):", error);
+        throw new HttpError({
+          status: 409,
+          message: "This Google account is already linked to another user.",
+        });
+      }
+    } else if (error.code === 11000 && error.keyPattern?.email) {
+      console.error("Failed to create Firebase user (duplicate email):", error);
+      throw new HttpError({
+        status: 409,
+        message: "An account with this email already exists. Please sign in with your existing account.",
+      });
+    } else {
+      console.error("Failed to link Firebase account:", error);
+      throw new HttpError({
+        status: 500,
+        message: "Unable to complete social sign-in. Please try again later.",
+      });
+    }
   }
 
   const appToken = jwt.sign({ id: user._id }, env.JWT_SECRET, {
